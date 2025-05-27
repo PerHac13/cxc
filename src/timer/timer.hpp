@@ -17,7 +17,7 @@ private:
     double elapsed_time();
 
 public:
-    Timer() : running(false), start_clock(0), acc_time(0) {}
+    Timer();
 
     void start(const char *msg = 0);
     void restart(const char *msg = 0);
