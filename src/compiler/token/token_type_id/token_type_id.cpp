@@ -1,4 +1,4 @@
-#include "tocken_type_id.hpp"
+#include "token_type_id.hpp"
 
 bool is_token_type_id(int num)
 {
