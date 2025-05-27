@@ -1,0 +1,7 @@
+.vscode
+*.o
+*.gch
+test*.txt
+build
+comp
+*.asm
