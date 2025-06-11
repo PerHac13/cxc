@@ -80,7 +80,7 @@ int StateTransitionTable::get_column_index(char character)
     else if (islower(character) && isalpha(character))
         return 4;
     else if (isupper(character) && isalpha(character))
-        return;
+        return 5;
     else if (EOFToken::is_eof(character))
         return 6;
     else if (isspace(character))
