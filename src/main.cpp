@@ -4,6 +4,7 @@
 #include <stdlib.h>
 
 #include "timer/timer.hpp"
+#include "compiler/compiler.hpp"
 
 std::string get_filename(int argc, char *argv[]);
 
@@ -16,8 +17,11 @@ int main(int argc, char *argv[])
     std::string filename = get_filename(argc, argv);
 
     // Compiler entry point
-
+    Compiler compiler;
+    compiler.compile(filename);
     // Compiler end point
+
+    std::cout << "Success :)" << std::endl;
 
     timer.stop("Compiler program finished");
 
