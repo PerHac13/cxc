@@ -1,6 +1,6 @@
 # Compiler
 
-This is a simple compiler written for an undergraduate course in Program Translation.
+This is a simple compiler written in cpp from scratch.
 
 ## Usage
 
@@ -11,17 +11,17 @@ This is a simple compiler written for an undergraduate course in Program Transla
 ```
 ! myprogram.txt !
 program
-var num
+program
 start
-  let num = 42 ,
-  print num ,
+  print #(((2 + 2) * 3) / 4) ,
 end
 ```
 
 3. Compile the program into assembly code.
+   Note: [--show-pt]: show parse tree for debugging and educational purpose
 
 ```
-$ comp myprogram.txt
+$ cxc myprogram.txt [--show-pt]
 ```
 
 4. Run the interpreter on the corresponding assembly code
@@ -30,9 +30,21 @@ $ comp myprogram.txt
 $ asmb myprogram.asm
 ```
 
+## ✅ Feature Implementation Status Table
+
+| Feature                | Status          | Notes                                               |
+| ---------------------- | --------------- | --------------------------------------------------- |
+| Arithmetic             | ✅ Working      | All basic ops tested. Negation (`#`) works as well. |
+| Variables              | ❌ Not Working  | Variable assignment doesn't reflect in output.      |
+| Conditional Statements | ⚠️ Untested     | Basic `if` works with comparison.                   |
+| Looping (iter)         | ✅ Working      | Confirmed with simple loop cases.                   |
+| Input (read)           | ⚠️ Untested     | Needs testing for correctness and edge cases.       |
+| Operators              | ⚠️ Partially OK | `>`, `<`, `:` need deeper testing and precedence.   |
+| Comments               | ✅ Working      | Ignored properly during parsing.                    |
+
 ## Sample Programs and Language Features
 
-### Variables
+### Variables (Not Working)
 
 ```
 program
@@ -48,7 +60,6 @@ Output:
 ```
 42
 ```
-
 
 ### Loops
 
@@ -74,7 +85,6 @@ Output:
 2
 ```
 
-
 ### Conditionals
 
 ```
@@ -94,10 +104,9 @@ Output:
 
 #### Supported Operators
 
-* **>** - Greater than
-* **<** - Less than
-* **:** - Equals
-
+- **>** - Greater than
+- **<** - Less than
+- **:** - Equals
 
 ### Arithmetic and Expressions
 
@@ -114,8 +123,7 @@ Output:
 -3
 ```
 
-**NOTE:** All operators have standard meaning except **#** means *negation*.
-
+**NOTE:** All operators have standard meaning except **#** means _negation_.
 
 ### Input
 
@@ -129,7 +137,6 @@ end
 ```
 
 The program would print whatever the user input.
-
 
 ### Comments
 
@@ -153,10 +160,10 @@ The frontend of our compiler is composed of two parts:
 The scanner uses a driver and state transition table.
 
 ### Deterministic Finite Automaton
+
 ![Deterministic Finite Automaton](assets/deterministic-finite-automaton.png)
 
 To edit import `assets/deterministic-finite-automaton.json` at https://merfoo.github.io/fsm/
-
 
 ### State Transition Table
 
@@ -166,28 +173,28 @@ The function corresponding to the finite automaton driver is `Scanner::read()` i
 
 To edit import `assets/state-transition-table.csv` into your favorite spreadsheet program.
 
-| 0-9         | !            | + - * / < > = : # | . ( ) , { } ; [ ] | a-z         | A-Z         | EoF          | White Space  |
-|-------------|--------------|-------------------|-------------------|-------------|-------------|--------------|--------------|
-| 1           | 9            | 10                | 11                | 12          | Error       | EoF          | 0            |
-| 3           | Integer      | Integer           | Integer           | Integer     | Integer     | Integer      | Integer      |
-| 2           | Integer      | Integer           | Integer           | Integer     | Integer     | Integer      | Integer      |
-| 4           | Integer      | Integer           | Integer           | Integer     | Integer     | Integer      | Integer      |
-| 5           | Integer      | Integer           | Integer           | Integer     | Integer     | Integer      | Integer      |
-| 6           | Integer      | Integer           | Integer           | Integer     | Integer     | Integer      | Integer      |
-| 7           | Integer      | Integer           | Integer           | Integer     | Integer     | Integer      | Integer      |
-| 8           | Integer      | Integer           | Integer           | Integer     | Integer     | Integer      | Integer      |
-| Error       | Integer      | Integer           | Integer           | Integer     | Integer     | Integer      | Integer      |
-| 9           | 0            | 9                 | 9                 | 9           | 9           | 9            | 9            |
-| Operator    | Operator     | Operator          | Operator          | Operator    | Operator    | Operator     | Operator     |
-| Delimiter   | Delimiter    | Delimiter         | Delimiter         | Delimiter   | Delimiter   | Delimiter    | Delimiter    |
-| 13          | Identifier   | Identifier        | Identifier        | 13          | 13          | Identifier   | Identifier   |
-| 14          | Identifier   | Identifier        | Identifier        | 14          | 14          | Identifier   | Identifier   |
-| 15          | Identifier   | Identifier        | Identifier        | 15          | 15          | Identifier   | Identifier   |
-| 16          | Identifier   | Identifier        | Identifier        | 16          | 16          | Identifier   | Identifier   |
-| 17          | Identifier   | Identifier        | Identifier        | 17          | 17          | Identifier   | Identifier   |
-| 18          | Identifier   | Identifier        | Identifier        | 18          | 18          | Identifier   | Identifier   |
-| 19          | Identifier   | Identifier        | Identifier        | 19          | 19          | Identifier   | Identifier   |
-| Error       | Identifier   | Identifier        | Identifier        | Error       | Error       | Identifier   | Identifier   |
+| 0-9       | !          | + - \* / < > = : # | . ( ) , { } ; [ ] | a-z       | A-Z       | EoF        | White Space |
+| --------- | ---------- | ------------------ | ----------------- | --------- | --------- | ---------- | ----------- |
+| 1         | 9          | 10                 | 11                | 12        | Error     | EoF        | 0           |
+| 3         | Integer    | Integer            | Integer           | Integer   | Integer   | Integer    | Integer     |
+| 2         | Integer    | Integer            | Integer           | Integer   | Integer   | Integer    | Integer     |
+| 4         | Integer    | Integer            | Integer           | Integer   | Integer   | Integer    | Integer     |
+| 5         | Integer    | Integer            | Integer           | Integer   | Integer   | Integer    | Integer     |
+| 6         | Integer    | Integer            | Integer           | Integer   | Integer   | Integer    | Integer     |
+| 7         | Integer    | Integer            | Integer           | Integer   | Integer   | Integer    | Integer     |
+| 8         | Integer    | Integer            | Integer           | Integer   | Integer   | Integer    | Integer     |
+| Error     | Integer    | Integer            | Integer           | Integer   | Integer   | Integer    | Integer     |
+| 9         | 0          | 9                  | 9                 | 9         | 9         | 9          | 9           |
+| Operator  | Operator   | Operator           | Operator          | Operator  | Operator  | Operator   | Operator    |
+| Delimiter | Delimiter  | Delimiter          | Delimiter         | Delimiter | Delimiter | Delimiter  | Delimiter   |
+| 13        | Identifier | Identifier         | Identifier        | 13        | 13        | Identifier | Identifier  |
+| 14        | Identifier | Identifier         | Identifier        | 14        | 14        | Identifier | Identifier  |
+| 15        | Identifier | Identifier         | Identifier        | 15        | 15        | Identifier | Identifier  |
+| 16        | Identifier | Identifier         | Identifier        | 16        | 16        | Identifier | Identifier  |
+| 17        | Identifier | Identifier         | Identifier        | 17        | 17        | Identifier | Identifier  |
+| 18        | Identifier | Identifier         | Identifier        | 18        | 18        | Identifier | Identifier  |
+| 19        | Identifier | Identifier         | Identifier        | 19        | 19        | Identifier | Identifier  |
+| Error     | Identifier | Identifier         | Identifier        | Error     | Error     | Identifier | Identifier  |
 
 ### BNF
 
@@ -240,9 +247,11 @@ In our language scopes are imposed by blocks denoted by **start** and **end**, c
 For our compiler, we implement **local scoping** in contrast to global scoping.
 
 ### Code Generation
+
 We traverse the decorated parse tree for each node generate corresponding assembly code.
 
 ### Optimization
+
 For optimization we remove redundant assembly code statements to read from stack memory when we just wrote to that same location in stack memory.
 
 For example, consider the following program:
