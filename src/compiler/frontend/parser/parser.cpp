@@ -3,6 +3,7 @@
 Parser::Parser(std::string filename)
 {
     scanner = new Scanner(filename);
+    current_token = scanner->read();
 }
 
 Parser::~Parser()
