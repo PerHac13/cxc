@@ -7,7 +7,7 @@
 #include "table_errors.hpp"
 #include "../../../token/token.hpp"
 
-#define COMMENT_CHAR '#'
+#define COMMENT_CHAR '!'
 #define COMMENT_STATE 9
 
 class StateTransitionTable
