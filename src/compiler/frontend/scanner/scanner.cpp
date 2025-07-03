@@ -5,7 +5,7 @@
 #include "scanner.hpp"
 #include "state_transition_table/state_transition_table.hpp"
 
-Scanner::Scanner(std::string filename) : line_number(1), is_eof_reached(false), next_char(' ')
+Scanner::Scanner(std::string filename) : line_number(1), next_char(' '), is_eof_reached(false)
 {
     file.open(filename);
     check_file(file, filename);
