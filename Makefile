@@ -19,7 +19,7 @@ CPPFLAGS := $(INC_FLAGS) -MMD -MP
 CXXFLAGS := -g -std=c++11 -Wall
 
 # Final binary output
-TARGET_PATH := $(BUILD_DIR)/$(TARGET_EXEC)
+TARGET_PATH := $(TARGET_EXEC)
 
 # Default target
 all: $(TARGET_PATH)
