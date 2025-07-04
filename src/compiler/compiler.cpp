@@ -1,5 +1,7 @@
 #include "compiler.hpp"
 
+Compiler::Compiler(bool show_parse_tree) : show_parse_tree(show_parse_tree) {}
+
 void Compiler::compile(std::string filename)
 {
     Parser parser(filename);
@@ -7,15 +9,24 @@ void Compiler::compile(std::string filename)
 
     std::string basename = get_basename(filename);
 
-    if (root != nullptr)
+    if (root == nullptr)
     {
+        std::cerr << "Parsing failed for file: " << filename << std::endl;
+        return;
+    }
+    if (show_parse_tree)
+    {
+        std::cout << "Parse tree for file: " << filename << std::endl;
         Node::print(root);
-        Node::destroy(root);
     }
-    else
-    {
-        std::cerr << "Parsing failed for file: " << basename << std::endl;
-    }
+
+    Backend backend(basename);
+    backend.traverse(root);
+
+    Optimizer optimizer;
+    optimizer.optimize(basename + ASM_EXT);
+
+    Node::destroy(root);
 }
 
 std::string Compiler::get_basename(std::string filename)
